@@ -1,0 +1,35 @@
+# Python cache/build artifacts
+__pycache__/
+*.py[cod]
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE/editor/OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Environment/config secrets
+.env
+.env.*
+
+# Runtime outputs under HomeworkVault
+HomeworkVault/Inbox/
+HomeworkVault/Library/
+HomeworkVault/Daily/
+HomeworkVault/Reports/
+HomeworkVault/Config/teacher_cmd.txt

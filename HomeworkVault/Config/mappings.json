@@ -1,0 +1,454 @@
+{
+  "VOCAB": {
+    "max_index": 17,
+    "items": {
+      "1": {
+        "title_zh": "词汇01",
+        "title_en": "Vocab01",
+        "synonyms": [
+          "词汇01",
+          "Vocab01",
+          "第1类",
+          "1类",
+          "1"
+        ]
+      },
+      "2": {
+        "title_zh": "词汇02",
+        "title_en": "Vocab02",
+        "synonyms": [
+          "词汇02",
+          "Vocab02",
+          "第2类",
+          "2类",
+          "2"
+        ]
+      },
+      "3": {
+        "title_zh": "词汇03",
+        "title_en": "Vocab03",
+        "synonyms": [
+          "词汇03",
+          "Vocab03",
+          "第3类",
+          "3类",
+          "3"
+        ]
+      },
+      "4": {
+        "title_zh": "词汇04",
+        "title_en": "Vocab04",
+        "synonyms": [
+          "词汇04",
+          "Vocab04",
+          "第4类",
+          "4类",
+          "4"
+        ]
+      },
+      "5": {
+        "title_zh": "词汇05",
+        "title_en": "Vocab05",
+        "synonyms": [
+          "词汇05",
+          "Vocab05",
+          "第5类",
+          "5类",
+          "5"
+        ]
+      },
+      "6": {
+        "title_zh": "词汇06",
+        "title_en": "Vocab06",
+        "synonyms": [
+          "词汇06",
+          "Vocab06",
+          "第6类",
+          "6类",
+          "6"
+        ]
+      },
+      "7": {
+        "title_zh": "颜色",
+        "title_en": "Color",
+        "synonyms": [
+          "颜色",
+          "color",
+          "第七类",
+          "7类",
+          "七类"
+        ]
+      },
+      "8": {
+        "title_zh": "词汇08",
+        "title_en": "Vocab08",
+        "synonyms": [
+          "词汇08",
+          "Vocab08",
+          "第8类",
+          "8类",
+          "8"
+        ]
+      },
+      "9": {
+        "title_zh": "词汇09",
+        "title_en": "Vocab09",
+        "synonyms": [
+          "词汇09",
+          "Vocab09",
+          "第9类",
+          "9类",
+          "9"
+        ]
+      },
+      "10": {
+        "title_zh": "词汇10",
+        "title_en": "Vocab10",
+        "synonyms": [
+          "词汇10",
+          "Vocab10",
+          "第10类",
+          "10类",
+          "10"
+        ]
+      },
+      "11": {
+        "title_zh": "词汇11",
+        "title_en": "Vocab11",
+        "synonyms": [
+          "词汇11",
+          "Vocab11",
+          "第11类",
+          "11类",
+          "11"
+        ]
+      },
+      "12": {
+        "title_zh": "词汇12",
+        "title_en": "Vocab12",
+        "synonyms": [
+          "词汇12",
+          "Vocab12",
+          "第12类",
+          "12类",
+          "12"
+        ]
+      },
+      "13": {
+        "title_zh": "词汇13",
+        "title_en": "Vocab13",
+        "synonyms": [
+          "词汇13",
+          "Vocab13",
+          "第13类",
+          "13类",
+          "13"
+        ]
+      },
+      "14": {
+        "title_zh": "词汇14",
+        "title_en": "Vocab14",
+        "synonyms": [
+          "词汇14",
+          "Vocab14",
+          "第14类",
+          "14类",
+          "14"
+        ]
+      },
+      "15": {
+        "title_zh": "词汇15",
+        "title_en": "Vocab15",
+        "synonyms": [
+          "词汇15",
+          "Vocab15",
+          "第15类",
+          "15类",
+          "15"
+        ]
+      },
+      "16": {
+        "title_zh": "词汇16",
+        "title_en": "Vocab16",
+        "synonyms": [
+          "词汇16",
+          "Vocab16",
+          "第16类",
+          "16类",
+          "16"
+        ]
+      },
+      "17": {
+        "title_zh": "词汇17",
+        "title_en": "Vocab17",
+        "synonyms": [
+          "词汇17",
+          "Vocab17",
+          "第17类",
+          "17类",
+          "17"
+        ]
+      }
+    }
+  },
+  "SENTENCE": {
+    "max_index": 15,
+    "items": {
+      "1": {
+        "title_zh": "句子01",
+        "title_en": "Sentence01",
+        "synonyms": [
+          "句子01",
+          "Sentence01",
+          "第1类",
+          "1类",
+          "1"
+        ]
+      },
+      "2": {
+        "title_zh": "句子02",
+        "title_en": "Sentence02",
+        "synonyms": [
+          "句子02",
+          "Sentence02",
+          "第2类",
+          "2类",
+          "2"
+        ]
+      },
+      "3": {
+        "title_zh": "句子03",
+        "title_en": "Sentence03",
+        "synonyms": [
+          "句子03",
+          "Sentence03",
+          "第3类",
+          "3类",
+          "3"
+        ]
+      },
+      "4": {
+        "title_zh": "句子04",
+        "title_en": "Sentence04",
+        "synonyms": [
+          "句子04",
+          "Sentence04",
+          "第4类",
+          "4类",
+          "4"
+        ]
+      },
+      "5": {
+        "title_zh": "数量相关",
+        "title_en": "Quantity",
+        "synonyms": [
+          "数量",
+          "数量相关",
+          "第5类",
+          "五类",
+          "句子五"
+        ]
+      },
+      "6": {
+        "title_zh": "句子06",
+        "title_en": "Sentence06",
+        "synonyms": [
+          "句子06",
+          "Sentence06",
+          "第6类",
+          "6类",
+          "6"
+        ]
+      },
+      "7": {
+        "title_zh": "句子07",
+        "title_en": "Sentence07",
+        "synonyms": [
+          "句子07",
+          "Sentence07",
+          "第7类",
+          "7类",
+          "7"
+        ]
+      },
+      "8": {
+        "title_zh": "句子08",
+        "title_en": "Sentence08",
+        "synonyms": [
+          "句子08",
+          "Sentence08",
+          "第8类",
+          "8类",
+          "8"
+        ]
+      },
+      "9": {
+        "title_zh": "句子09",
+        "title_en": "Sentence09",
+        "synonyms": [
+          "句子09",
+          "Sentence09",
+          "第9类",
+          "9类",
+          "9"
+        ]
+      },
+      "10": {
+        "title_zh": "句子10",
+        "title_en": "Sentence10",
+        "synonyms": [
+          "句子10",
+          "Sentence10",
+          "第10类",
+          "10类",
+          "10"
+        ]
+      },
+      "11": {
+        "title_zh": "句子11",
+        "title_en": "Sentence11",
+        "synonyms": [
+          "句子11",
+          "Sentence11",
+          "第11类",
+          "11类",
+          "11"
+        ]
+      },
+      "12": {
+        "title_zh": "句子12",
+        "title_en": "Sentence12",
+        "synonyms": [
+          "句子12",
+          "Sentence12",
+          "第12类",
+          "12类",
+          "12"
+        ]
+      },
+      "13": {
+        "title_zh": "句子13",
+        "title_en": "Sentence13",
+        "synonyms": [
+          "句子13",
+          "Sentence13",
+          "第13类",
+          "13类",
+          "13"
+        ]
+      },
+      "14": {
+        "title_zh": "句子14",
+        "title_en": "Sentence14",
+        "synonyms": [
+          "句子14",
+          "Sentence14",
+          "第14类",
+          "14类",
+          "14"
+        ]
+      },
+      "15": {
+        "title_zh": "句子15",
+        "title_en": "Sentence15",
+        "synonyms": [
+          "句子15",
+          "Sentence15",
+          "第15类",
+          "15类",
+          "15"
+        ]
+      }
+    }
+  },
+  "FASTSTORY": {
+    "max_index": 6,
+    "items": {
+      "1": {
+        "title_zh": "快嘴01",
+        "title_en": "FastStory01",
+        "synonyms": [
+          "快嘴01",
+          "FastStory01",
+          "第1类",
+          "1类",
+          "1"
+        ]
+      },
+      "2": {
+        "title_zh": "快嘴02",
+        "title_en": "FastStory02",
+        "synonyms": [
+          "快嘴02",
+          "FastStory02",
+          "第2类",
+          "2类",
+          "2"
+        ]
+      },
+      "3": {
+        "title_zh": "A super player",
+        "title_en": "A super player",
+        "synonyms": [
+          "第三篇",
+          "第3篇",
+          "3篇",
+          "A super player",
+          "super player"
+        ]
+      },
+      "4": {
+        "title_zh": "快嘴04",
+        "title_en": "FastStory04",
+        "synonyms": [
+          "快嘴04",
+          "FastStory04",
+          "第4类",
+          "4类",
+          "4"
+        ]
+      },
+      "5": {
+        "title_zh": "快嘴05",
+        "title_en": "FastStory05",
+        "synonyms": [
+          "快嘴05",
+          "FastStory05",
+          "第5类",
+          "5类",
+          "5"
+        ]
+      },
+      "6": {
+        "title_zh": "快嘴06",
+        "title_en": "FastStory06",
+        "synonyms": [
+          "快嘴06",
+          "FastStory06",
+          "第6类",
+          "6类",
+          "6"
+        ]
+      }
+    }
+  },
+  "GLOBAL_SYNONYMS": {
+    "VOCAB": [
+      "词汇",
+      "单词",
+      "词组",
+      "vocab"
+    ],
+    "SENTENCE": [
+      "句子",
+      "句型",
+      "sentence"
+    ],
+    "FASTSTORY": [
+      "快嘴",
+      "阅读",
+      "小短文",
+      "story"
+    ]
+  }
+}
