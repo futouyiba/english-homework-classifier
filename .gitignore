@@ -26,6 +26,8 @@ Thumbs.db
 # Environment/config secrets
 .env
 .env.*
+*.log
+*.pid
 
 # Runtime outputs under HomeworkVault
 HomeworkVault/Inbox/
@@ -33,3 +35,6 @@ HomeworkVault/Library/
 HomeworkVault/Daily/
 HomeworkVault/Reports/
 HomeworkVault/Config/teacher_cmd.txt
+dev_server.err.log
+dev_server.out.log
+dev_server.pid

@@ -201,6 +201,31 @@
 { "ok": true }
 ```
 
+## `GET /api/structured/list`
+
+用途：列出 `originalText/structured` 下可读取文件。  
+返回：
+
+```json
+{ "files": ["vocab_17.json", "sentence_15.json", "faststory_6.json"] }
+```
+
+## `GET /api/structured/read`
+
+用途：读取 `structured` 文件内容（json 或 txt）。  
+查询参数：`path`（文件名）  
+返回：`{path, data}` 或 `{path, text}`
+
+## `POST /api/config/apply-seed`
+
+用途：将 `originalText/structured/mappings_seed_from_originalText.json` 应用为运行配置。  
+可选查询参数：`seed_file`（默认值为上面的文件名）  
+返回：
+
+```json
+{ "ok": true }
+```
+
 ## 5. 老师指令与 Daily
 
 ## `POST /api/teacher/parse`

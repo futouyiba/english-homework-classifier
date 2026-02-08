@@ -275,6 +275,17 @@ td.flag-yes {
   color: #0f766e;
 }
 
+.signal-chip {
+  display: inline-block;
+  border: 1px solid var(--line);
+  background: #f6f9ff;
+  border-radius: 999px;
+  padding: 2px 8px;
+  margin: 2px 4px 2px 0;
+  font-size: 12px;
+  color: #2b4b86;
+}
+
 .player-item {
   border: 1px solid var(--line);
   border-radius: 10px;

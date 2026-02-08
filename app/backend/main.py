@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import logging
 import os
 import subprocess
@@ -39,6 +40,7 @@ from .services import (
 app = FastAPI(title="Homework Audio Agent API", version="0.1.0")
 FRONTEND_DIR = PROJECT_ROOT / "app" / "frontend"
 VAULT_ROOT = (PROJECT_ROOT / "HomeworkVault").resolve()
+STRUCTURED_DIR = (PROJECT_ROOT / "originalText" / "structured").resolve()
 
 app.add_middleware(
     CORSMiddleware,
@@ -196,6 +198,18 @@ def _resolve_vault_file(path: str) -> Path:
     return target
 
 
+def _resolve_structured_file(path: str) -> Path:
+    candidate = Path(path)
+    if candidate.is_absolute():
+        raise HTTPException(status_code=400, detail="Path must be relative")
+    target = (STRUCTURED_DIR / candidate).resolve()
+    try:
+        target.relative_to(STRUCTURED_DIR)
+    except ValueError as exc:
+        raise HTTPException(status_code=403, detail="Access denied") from exc
+    return target
+
+
 @app.get("/api/file")
 def get_file(path: str = Query(..., description="Project-relative file path")) -> FileResponse:
     target = _resolve_vault_file(path)
@@ -231,6 +245,43 @@ def open_folder(path: str = Query(..., description="Project-relative folder path
         raise
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc)) from exc
+    return {"ok": True}
+
+
+@app.get("/api/structured/list")
+def structured_list() -> dict[str, list[str]]:
+    if not STRUCTURED_DIR.exists():
+        return {"files": []}
+    files = sorted([p.name for p in STRUCTURED_DIR.glob("*") if p.is_file()])
+    return {"files": files}
+
+
+@app.get("/api/structured/read")
+def structured_read(path: str = Query(..., description="File name under originalText/structured")) -> dict[str, Any]:
+    target = _resolve_structured_file(path)
+    if not target.exists() or not target.is_file():
+        raise HTTPException(status_code=404, detail="File not found")
+
+    if target.suffix.lower() == ".json":
+        try:
+            return {"path": path, "data": json.loads(target.read_text(encoding="utf-8"))}
+        except Exception as exc:
+            raise HTTPException(status_code=400, detail=f"Invalid JSON: {exc}") from exc
+    return {"path": path, "text": target.read_text(encoding="utf-8")}
+
+
+@app.post("/api/config/apply-seed")
+def config_apply_seed(
+    seed_file: str = Query(default="mappings_seed_from_originalText.json", description="Seed JSON under structured dir"),
+) -> dict[str, bool]:
+    target = _resolve_structured_file(seed_file)
+    if not target.exists() or not target.is_file():
+        raise HTTPException(status_code=404, detail="Seed file not found")
+    try:
+        payload = json.loads(target.read_text(encoding="utf-8"))
+        save_mappings(payload)
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=f"Cannot apply seed: {exc}") from exc
     return {"ok": True}
 
 

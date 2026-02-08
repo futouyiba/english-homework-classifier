@@ -80,6 +80,7 @@ function bindTabs() {
     library: $("tab-library"),
     daily: $("tab-daily"),
     asr: $("tab-asr"),
+    source: $("tab-source"),
   };
   buttons.forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -95,7 +96,16 @@ async function refreshInbox() {
   const rows = await api("/api/inbox/items");
   inboxRowsCache = rows;
   const onlyReview = $("inbox-only-review")?.checked;
-  const filteredRows = onlyReview ? rows.filter((r) => r.needs_review) : rows;
+  const filterType = $("inbox-filter-type")?.value || "ALL";
+  const filterIndexRaw = ($("inbox-filter-index")?.value || "").trim();
+  const filterIndex = filterIndexRaw ? Number(filterIndexRaw) : null;
+
+  const filteredRows = rows.filter((r) => {
+    if (onlyReview && !r.needs_review) return false;
+    if (filterType !== "ALL" && r?.tag?.type !== filterType) return false;
+    if (filterIndex && Number(r?.tag?.index || 0) !== filterIndex) return false;
+    return true;
+  });
 
   const reviewCount = rows.filter((r) => r.needs_review).length;
   const archivedCount = rows.filter((r) => Boolean(r.library_path)).length;
@@ -108,6 +118,11 @@ async function refreshInbox() {
   for (const row of filteredRows) {
     const tr = document.createElement("tr");
     const title = `${row?.tag?.title_zh || ""} / ${row?.tag?.title_en || ""}`;
+    const signals = row?.tag?.signals || {};
+    const signalPreview = (signals.hit_keywords || []).slice(0, 3);
+    const signalHtml = signalPreview.length
+      ? signalPreview.map((x) => `<span class="signal-chip">${x}</span>`).join("")
+      : '<span class="signal-chip">无</span>';
     tr.innerHTML = `
       <td>${row.created_at || ""}</td>
       <td>${row?.tag?.type || ""}</td>
@@ -117,6 +132,7 @@ async function refreshInbox() {
       <td class="${row.needs_review ? "flag-yes" : ""}">${row.needs_review ? "是" : "否"}</td>
       <td>${row.library_path || ""}</td>
       <td>${row.src_path ? `<a href="/api/file?path=${encodeURIComponent(row.src_path)}" target="_blank" rel="noopener">源文件</a>` : "-"}</td>
+      <td>${signalHtml}</td>
       <td>${row.needs_review ? `<button class="alt mini-btn" data-action="pick-relabel" data-id="${row.id}" data-type="${row?.tag?.type || ""}" data-index="${row?.tag?.index || ""}">手动修正</button>` : "-"}</td>
     `;
     tbody.appendChild(tr);
@@ -161,6 +177,22 @@ function initInbox() {
   });
 
   $("inbox-only-review").addEventListener("change", async () => {
+    try {
+      await refreshInbox();
+    } catch (e) {
+      $("inbox-log").textContent = String(e);
+    }
+  });
+
+  $("inbox-filter-type").addEventListener("change", async () => {
+    try {
+      await refreshInbox();
+    } catch (e) {
+      $("inbox-log").textContent = String(e);
+    }
+  });
+
+  $("inbox-filter-index").addEventListener("input", async () => {
     try {
       await refreshInbox();
     } catch (e) {
@@ -438,6 +470,55 @@ function initAsr() {
   });
 }
 
+async function refreshSourceFiles() {
+  const data = await api("/api/structured/list");
+  const select = $("source-file");
+  select.innerHTML = "";
+  for (const name of data.files || []) {
+    const opt = document.createElement("option");
+    opt.value = name;
+    opt.textContent = name;
+    select.appendChild(opt);
+  }
+}
+
+function initSource() {
+  $("btn-source-refresh").addEventListener("click", async () => {
+    try {
+      await refreshSourceFiles();
+      $("source-log").textContent = "文件列表已刷新。";
+    } catch (e) {
+      $("source-log").textContent = String(e);
+    }
+  });
+
+  $("btn-source-read").addEventListener("click", async () => {
+    const name = $("source-file").value;
+    if (!name) {
+      $("source-log").textContent = "请先选择文件。";
+      return;
+    }
+    try {
+      const data = await api(`/api/structured/read?path=${encodeURIComponent(name)}`);
+      $("source-content").textContent = pretty(data.data ?? data.text ?? data);
+      $("source-log").textContent = `已读取: ${name}`;
+    } catch (e) {
+      $("source-log").textContent = String(e);
+    }
+  });
+
+  $("btn-apply-seed").addEventListener("click", async () => {
+    try {
+      const data = await api("/api/config/apply-seed", { method: "POST" });
+      mappingsCache = null;
+      await loadMappings();
+      $("source-log").textContent = `seed 已应用: ${pretty(data)}`;
+    } catch (e) {
+      $("source-log").textContent = String(e);
+    }
+  });
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   bindTabs();
   try {
@@ -449,10 +530,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   initLibrary();
   initDaily();
   initAsr();
+  initSource();
   resetRelabelForm();
   try {
     await refreshInbox();
     await refreshLibrary();
+    await refreshSourceFiles();
   } catch (e) {
     $("inbox-log").textContent = String(e);
   }

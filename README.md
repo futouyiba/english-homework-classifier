@@ -25,6 +25,13 @@ python -m uvicorn app.backend.main:app --host 127.0.0.1 --port 8000 --reload
 3. 打开接口文档：`http://127.0.0.1:8000/docs`
 4. 打开联调页面：`http://127.0.0.1:8000/ui`
 
+也可使用常驻 dev 脚本（类似 `npm run dev`）：
+```bash
+python scripts/dev_server.py start
+python scripts/dev_server.py status
+python scripts/dev_server.py stop
+```
+
 ### ASR 环境变量
 
 - `ASR_ENGINE`: `whisper_local`（默认）| `openai_api` | `stub`

@@ -21,6 +21,7 @@
         <button class="tab-btn" data-tab="library">Library</button>
         <button class="tab-btn" data-tab="daily">Daily</button>
         <button class="tab-btn" data-tab="asr">ASR 调试</button>
+        <button class="tab-btn" data-tab="source">教材原文</button>
       </nav>
 
       <section class="tab-panel is-active" id="tab-inbox">
@@ -33,6 +34,19 @@
           <button id="btn-upload">上传</button>
           <button id="btn-scan" class="alt">扫描处理</button>
           <button id="btn-refresh" class="alt">刷新列表</button>
+          <label class="inline-label">
+            类型筛选
+            <select id="inbox-filter-type">
+              <option value="ALL">全部</option>
+              <option value="VOCAB">VOCAB</option>
+              <option value="SENTENCE">SENTENCE</option>
+              <option value="FASTSTORY">FASTSTORY</option>
+            </select>
+          </label>
+          <label class="inline-label">
+            编号筛选
+            <input id="inbox-filter-index" type="number" min="1" placeholder="如 7" />
+          </label>
           <label class="inline-label">
             <input id="inbox-only-review" type="checkbox" />
             只看待复核
@@ -56,6 +70,7 @@
                 <th>需复核</th>
                 <th>落库路径</th>
                 <th>试听</th>
+                <th>命中线索</th>
                 <th>操作</th>
               </tr>
             </thead>
@@ -231,6 +246,24 @@
             <pre id="health-result" class="log"></pre>
           </div>
         </div>
+      </section>
+
+      <section class="tab-panel" id="tab-source">
+        <div class="panel-head">
+          <h2>教材原文与分拣结果</h2>
+          <p>查看 `originalText/structured` 输出，并可一键应用 `mappings` 种子。</p>
+        </div>
+        <div class="actions">
+          <label class="inline-label">
+            文件
+            <select id="source-file"></select>
+          </label>
+          <button id="btn-source-refresh">刷新文件列表</button>
+          <button id="btn-source-read" class="alt">读取文件</button>
+          <button id="btn-apply-seed" class="alt">应用 seed mappings</button>
+        </div>
+        <pre id="source-log" class="log"></pre>
+        <pre id="source-content" class="log"></pre>
       </section>
     </main>
     <script src="/ui/static/app.js" defer></script>
