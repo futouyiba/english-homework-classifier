@@ -2,12 +2,15 @@ from __future__ import annotations
 
 import logging
 import os
+import subprocess
 import tempfile
 from dataclasses import replace
 from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, File, HTTPException, Query, UploadFile
+from fastapi.responses import FileResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
 from .config import INBOX_DIR, PROJECT_ROOT, ensure_bootstrap, load_runtime_settings
@@ -34,6 +37,8 @@ from .services import (
 )
 
 app = FastAPI(title="Homework Audio Agent API", version="0.1.0")
+FRONTEND_DIR = PROJECT_ROOT / "app" / "frontend"
+VAULT_ROOT = (PROJECT_ROOT / "HomeworkVault").resolve()
 
 app.add_middleware(
     CORSMiddleware,
@@ -51,6 +56,23 @@ def _startup() -> None:
         format="%(asctime)s %(levelname)s %(name)s %(message)s",
     )
     ensure_bootstrap()
+
+
+if FRONTEND_DIR.exists():
+    app.mount("/ui/static", StaticFiles(directory=str(FRONTEND_DIR)), name="ui-static")
+
+
+@app.get("/", include_in_schema=False)
+def root() -> RedirectResponse:
+    return RedirectResponse(url="/ui")
+
+
+@app.get("/ui", include_in_schema=False)
+def ui_page() -> FileResponse:
+    index_path = FRONTEND_DIR / "index.html"
+    if not index_path.exists():
+        raise HTTPException(status_code=404, detail="Frontend not found")
+    return FileResponse(index_path)
 
 
 @app.get("/api/health")
@@ -159,6 +181,57 @@ async def asr_test(
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+
+def _resolve_vault_file(path: str) -> Path:
+    candidate = Path(path)
+    if candidate.is_absolute():
+        raise HTTPException(status_code=400, detail="Path must be project-relative")
+    target = (PROJECT_ROOT / candidate).resolve()
+    try:
+        target.relative_to(PROJECT_ROOT.resolve())
+        target.relative_to(VAULT_ROOT)
+    except ValueError as exc:
+        raise HTTPException(status_code=403, detail="Access denied") from exc
+    return target
+
+
+@app.get("/api/file")
+def get_file(path: str = Query(..., description="Project-relative file path")) -> FileResponse:
+    target = _resolve_vault_file(path)
+
+    if not target.exists() or not target.is_file():
+        raise HTTPException(status_code=404, detail="File not found")
+    return FileResponse(target)
+
+
+@app.get("/api/text")
+def get_text(path: str = Query(..., description="Project-relative text path")) -> dict[str, str]:
+    target = _resolve_vault_file(path)
+    if not target.exists() or not target.is_file():
+        raise HTTPException(status_code=404, detail="File not found")
+    try:
+        text = target.read_text(encoding="utf-8")
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=f"Cannot read text file: {exc}") from exc
+    return {"path": path, "text": text}
+
+
+@app.post("/api/open-folder")
+def open_folder(path: str = Query(..., description="Project-relative folder path")) -> dict[str, bool]:
+    target = _resolve_vault_file(path)
+    if not target.exists() or not target.is_dir():
+        raise HTTPException(status_code=404, detail="Folder not found")
+    try:
+        if os.name == "nt":
+            subprocess.Popen(["explorer", str(target)])
+        else:
+            raise HTTPException(status_code=400, detail="Open folder is only supported on Windows")
+    except HTTPException:
+        raise
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+    return {"ok": True}
 
 
 @app.get("/api/library/summary")

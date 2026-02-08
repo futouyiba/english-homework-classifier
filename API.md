@@ -175,6 +175,32 @@
 }
 ```
 
+## `GET /api/file`
+
+用途：按项目相对路径读取文件（用于前端音频试听）。  
+查询参数：`path`（必须位于 `HomeworkVault` 下）  
+返回：文件流（`FileResponse`）
+
+## `GET /api/text`
+
+用途：读取 `HomeworkVault` 下文本文件（用于读取 `_report.txt`）。  
+查询参数：`path`  
+返回：
+
+```json
+{ "path": "HomeworkVault/Daily/2026-02-08/_report.txt", "text": "..." }
+```
+
+## `POST /api/open-folder`
+
+用途：在本机打开 `HomeworkVault` 下目录（Windows 使用 explorer）。  
+查询参数：`path`  
+返回：
+
+```json
+{ "ok": true }
+```
+
 ## 5. 老师指令与 Daily
 
 ## `POST /api/teacher/parse`

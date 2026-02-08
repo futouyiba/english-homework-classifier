@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homework Audio Agent</title>
+    <link rel="stylesheet" href="/ui/static/styles.css" />
+  </head>
+  <body>
+    <div class="bg-shape bg-1"></div>
+    <div class="bg-shape bg-2"></div>
+    <main class="page">
+      <header class="hero">
+        <p class="eyebrow">Homework Audio Agent</p>
+        <h1>英语作业音频归档台</h1>
+        <p class="subtitle">Inbox 上传、指令解析、Daily 打包、ASR 调试一体联调</p>
+      </header>
+
+      <nav class="tabs" aria-label="功能标签">
+        <button class="tab-btn is-active" data-tab="inbox">Inbox</button>
+        <button class="tab-btn" data-tab="library">Library</button>
+        <button class="tab-btn" data-tab="daily">Daily</button>
+        <button class="tab-btn" data-tab="asr">ASR 调试</button>
+      </nav>
+
+      <section class="tab-panel is-active" id="tab-inbox">
+        <div class="panel-head">
+          <h2>收件箱</h2>
+          <p>上传音频后可直接扫描处理并查看识别结果。</p>
+        </div>
+        <div class="actions">
+          <input id="inbox-files" type="file" multiple accept=".m4a,.mp3,.wav,.aac,.flac,.ogg" />
+          <button id="btn-upload">上传</button>
+          <button id="btn-scan" class="alt">扫描处理</button>
+          <button id="btn-refresh" class="alt">刷新列表</button>
+          <label class="inline-label">
+            <input id="inbox-only-review" type="checkbox" />
+            只看待复核
+          </label>
+        </div>
+        <div class="stat-row">
+          <span id="stat-total" class="stat-pill">总数: 0</span>
+          <span id="stat-review" class="stat-pill warn">待复核: 0</span>
+          <span id="stat-archived" class="stat-pill ok">已落库: 0</span>
+        </div>
+        <pre id="inbox-log" class="log"></pre>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>时间</th>
+                <th>类型</th>
+                <th>编号</th>
+                <th>标题</th>
+                <th>置信度</th>
+                <th>需复核</th>
+                <th>落库路径</th>
+                <th>试听</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="inbox-table"></tbody>
+          </table>
+        </div>
+        <div class="relabel-box">
+          <h3>低置信手动修正</h3>
+          <p class="hint">先在上表点击“手动修正”，再确认 type/index/title 后提交。</p>
+          <div class="grid three">
+            <label>
+              条目 ID
+              <input id="relabel-id" type="text" readonly />
+            </label>
+            <label>
+              类型
+              <select id="relabel-type">
+                <option value="VOCAB">VOCAB</option>
+                <option value="SENTENCE">SENTENCE</option>
+                <option value="FASTSTORY">FASTSTORY</option>
+              </select>
+            </label>
+            <label>
+              编号
+              <select id="relabel-index"></select>
+            </label>
+          </div>
+          <div class="grid two">
+            <label>
+              中文标题
+              <input id="relabel-title-zh" type="text" />
+            </label>
+            <label>
+              英文标题
+              <input id="relabel-title-en" type="text" />
+            </label>
+          </div>
+          <div class="actions">
+            <button id="btn-relabel">提交修正</button>
+            <button id="btn-relabel-clear" class="alt">清空</button>
+          </div>
+          <div class="grid two">
+            <div>
+              <h4>选中条目预览</h4>
+              <audio id="relabel-audio" controls preload="none"></audio>
+            </div>
+            <div>
+              <h4>条目元信息</h4>
+              <pre id="relabel-meta" class="log"></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="tab-library">
+        <div class="panel-head">
+          <h2>素材库</h2>
+          <p>查看各条目 take 数量，按条目展开查询落库音频。</p>
+        </div>
+        <div class="actions">
+          <label class="inline-label">
+            类型
+            <select id="library-type">
+              <option value="ALL">全部</option>
+              <option value="VOCAB">VOCAB</option>
+              <option value="SENTENCE">SENTENCE</option>
+              <option value="FASTSTORY">FASTSTORY</option>
+            </select>
+          </label>
+          <button id="btn-library-refresh">刷新素材统计</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>类型</th>
+                <th>编号</th>
+                <th>标题</th>
+                <th>take 数</th>
+                <th>最新文件</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="library-table"></tbody>
+          </table>
+        </div>
+        <div class="grid two">
+          <div>
+            <h3>条目详情</h3>
+            <div id="library-player-list" class="player-list"></div>
+            <pre id="library-detail" class="log"></pre>
+          </div>
+          <div>
+            <h3>调试日志</h3>
+            <pre id="library-log" class="log"></pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="tab-daily">
+        <div class="panel-head">
+          <h2>每日打包</h2>
+          <p>粘贴老师指令，先解析需求，再生成当日文件夹。</p>
+        </div>
+        <div class="grid two">
+          <label>
+            打包日期
+            <input id="daily-date" type="date" />
+          </label>
+          <label>
+            快速模板
+            <input id="daily-template" type="text" placeholder="例如：句子五、句子8，词汇七和11，快嘴第三篇" />
+          </label>
+        </div>
+        <label>
+          老师指令原文
+          <textarea id="daily-cmd" rows="4" placeholder="粘贴微信群作业指令"></textarea>
+        </label>
+        <div class="actions">
+          <button id="btn-parse">解析指令</button>
+          <button id="btn-build" class="alt">生成 Daily</button>
+          <button id="btn-load-report" class="alt">读取_report.txt</button>
+          <button id="btn-open-daily" class="alt">打开今日目录</button>
+        </div>
+        <div class="grid two">
+          <div>
+            <h3>解析结果</h3>
+            <pre id="daily-needs" class="log"></pre>
+          </div>
+          <div>
+            <h3>打包结果</h3>
+            <pre id="daily-result" class="log"></pre>
+          </div>
+        </div>
+        <h3>报告内容</h3>
+        <pre id="daily-report" class="log"></pre>
+      </section>
+
+      <section class="tab-panel" id="tab-asr">
+        <div class="panel-head">
+          <h2>ASR 调试</h2>
+          <p>单条音频调试转写，快速观察 scope、耗时与标签预览。</p>
+        </div>
+        <div class="grid three">
+          <label>
+            音频文件
+            <input id="asr-file" type="file" accept=".m4a,.mp3,.wav,.aac,.flac,.ogg" />
+          </label>
+          <label>
+            Scope
+            <select id="asr-scope">
+              <option value="hybrid">hybrid</option>
+              <option value="head">head</option>
+              <option value="full">full</option>
+            </select>
+          </label>
+          <label>
+            标签窗口秒数
+            <input id="asr-window" type="number" min="1" value="20" />
+          </label>
+        </div>
+        <div class="actions">
+          <button id="btn-asr-test">运行 ASR 测试</button>
+          <button id="btn-health" class="alt">读取健康状态</button>
+        </div>
+        <div class="grid two">
+          <div>
+            <h3>ASR 结果</h3>
+            <pre id="asr-result" class="log"></pre>
+          </div>
+          <div>
+            <h3>服务状态</h3>
+            <pre id="health-result" class="log"></pre>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="/ui/static/app.js" defer></script>
+  </body>
+</html>

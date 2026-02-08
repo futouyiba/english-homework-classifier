@@ -23,6 +23,7 @@ pip install -r app/backend/requirements.txt
 python -m uvicorn app.backend.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 3. 打开接口文档：`http://127.0.0.1:8000/docs`
+4. 打开联调页面：`http://127.0.0.1:8000/ui`
 
 ### ASR 环境变量
 
@@ -43,6 +44,17 @@ python -m uvicorn app.backend.main:app --host 127.0.0.1 --port 8000 --reload
 调试建议：
 - 先用 `POST /api/asr/test` 验证转写与标签预览，再跑完整归档流程。
 - `scope=head` 可测试“仅前 N 秒转写”效果；`scope=full` 可测试全量转写；`scope=hybrid` 对齐主流程默认策略。
+
+### 原文转换与分拣
+
+当 `originalText/` 下放入 `pdf + docx` 原文后，可运行：
+```bash
+python scripts/prepare_original_text.py
+```
+该脚本会自动完成：
+- 转换：生成 `originalText/converted/*.txt`
+- 分拣：生成 `originalText/structured/vocab_17.json` / `sentence_15.json` / `faststory_6.json`
+- 配置：刷新 `HomeworkVault/Config/mappings.json`
 
 ## MVP 目标
 

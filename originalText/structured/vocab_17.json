@@ -1,0 +1,91 @@
+{
+  "type": "VOCAB",
+  "count": 17,
+  "items": [
+    {
+      "index": 1,
+      "title_zh": "时间",
+      "title_en": ""
+    },
+    {
+      "index": 2,
+      "title_zh": "地点",
+      "title_en": ""
+    },
+    {
+      "index": 3,
+      "title_zh": "动物",
+      "title_en": ""
+    },
+    {
+      "index": 4,
+      "title_zh": "天气",
+      "title_en": ""
+    },
+    {
+      "index": 5,
+      "title_zh": "数字",
+      "title_en": ""
+    },
+    {
+      "index": 6,
+      "title_zh": "交通工具",
+      "title_en": ""
+    },
+    {
+      "index": 7,
+      "title_zh": "颜色",
+      "title_en": ""
+    },
+    {
+      "index": 8,
+      "title_zh": "人物",
+      "title_en": ""
+    },
+    {
+      "index": 9,
+      "title_zh": "物品",
+      "title_en": ""
+    },
+    {
+      "index": 10,
+      "title_zh": "水果",
+      "title_en": ""
+    },
+    {
+      "index": 11,
+      "title_zh": "食物",
+      "title_en": ""
+    },
+    {
+      "index": 12,
+      "title_zh": "身体",
+      "title_en": ""
+    },
+    {
+      "index": 13,
+      "title_zh": "运动",
+      "title_en": ""
+    },
+    {
+      "index": 14,
+      "title_zh": "做运动",
+      "title_en": ""
+    },
+    {
+      "index": 15,
+      "title_zh": "其他",
+      "title_en": ""
+    },
+    {
+      "index": 16,
+      "title_zh": "形容词",
+      "title_en": ""
+    },
+    {
+      "index": 17,
+      "title_zh": "动词以及动词词组",
+      "title_en": ""
+    }
+  ]
+}
